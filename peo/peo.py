@@ -92,8 +92,7 @@ class Color:
         return "".join(msg)
 
 
-
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="Python Extensions for objdump")
     parser.add_argument("file")  # 必須の引数
     parser.add_argument("-d", "--disassemble", action="store_true", help="Display assembler contents of executable sections")  # オプション(フラグ)
@@ -112,3 +111,6 @@ if __name__ == "__main__":
 
         msgs = format_message(proc.stdout)
         pprint(msgs)
+
+if __name__ == "__main__":
+    main()
