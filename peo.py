@@ -1,6 +1,11 @@
+import re
 import sys
 import subprocess as sp
+import argparse
 
+from pprint import pprint
+
+# '#'があればそれはobjdumpがつけたコメントだとみなしてる
 def rm_comment(msg):
     try:
         msg = msg[0:msg.index("#")]
@@ -8,9 +13,26 @@ def rm_comment(msg):
         pass
     return msg
 
+# 両端の空白を削除、文中の連続した空白を半角空白1個に置き換え
 def rm_consecutive_spaces(msg):
-    return msg.strip().replace("  ", " ")
+    return re.sub(r"\s+", " ", msg).strip()
 
+def format_message(lines):
+    lines = lines.split("\n")  # 出力を行で分ける
+    msgs = []  # linesを整理したものが入る
+    for line in lines:
+        if line == "":  # 何もない行はいらない
+            continue
+        items = line.split("\t")  # 行を分ける 基本(アドレス、命令、読みやすい命令)に分かれる
+        if len(items) == 3:
+            items[2] = rm_comment(items[2])
+        msg = []  # items(line)を整理したものが入る
+        for item in items:
+            msg.append(rm_consecutive_spaces(item))
+        msgs.append(msg)
+    return msgs
+
+# terminal color
 class Color:
     colors = {
         "normal"         : "\033[0m",
@@ -72,18 +94,21 @@ class Color:
 
 
 if __name__ == "__main__":
-    filename = "a.out"
-    p = sp.run(["objdump", "-d", "-M", "intel", filename], encoding="utf-8", stdout=sp.PIPE, stderr=sp.PIPE)
-    if p.returncode != 0:
-        print(p.stderr)
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Python Extensions for objdump")
+    parser.add_argument("file")  # 必須の引数
+    parser.add_argument("-d", "--disassemble", action="store_true", help="Display assembler contents of executable sections")  # オプション(フラグ)
 
-    lines = p.stdout.split("\n")
-    for line in lines:
-        items = line.split("\t")
-        if len(items) == 3:
-            items[2] = rm_comment(items[2])
-        msg = []
-        for item in items:
-            msg.append(rm_consecutive_spaces(item))
-        print(msg)
+    args = parser.parse_args()
+
+    filepath = args.file  # ファイルのパス
+
+    if args.disassemble:
+        proc = sp.run(["objdump", "-d", "-M", "intel", filepath], encoding="utf-8", stdout=sp.PIPE, stderr=sp.PIPE)
+
+        # objdumpがエラーを出したらやめるっピ
+        if proc.returncode != 0:
+            print(proc.stderr)
+            sys.exit(1)
+
+        msgs = format_message(proc.stdout)
+        pprint(msgs)
