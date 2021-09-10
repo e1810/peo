@@ -2,6 +2,8 @@ import sys
 from pprint import pprint
 from enum import Enum, auto
 
+from peo.util import Color
+
 class EiClass(Enum):
     NONE = 0x00
     ELF32 = 0x01
@@ -50,7 +52,7 @@ class EMachine(Enum):
 def fhdr32(buf):
     # 例外処理なくていい......?
     print(f"ELF Header:")
-    print(f"  Magic:   {buf[:16].hex()}")
+    print(f"  Magic:   {Color.redify(buf[:4].hex()) + buf[4:16].hex()}")
     print(f"  Class:                             {EiClass(buf[4]).name}")
     print(f"  Data:                              {EiData(buf[5]).name}")
     print(f"  Version:                           {EiVersion(buf[6]).name}")
@@ -71,7 +73,7 @@ def fhdr32(buf):
 def fhdr64(buf):
     # 例外処理なくていい......?
     print(f"ELF Header:")
-    print(f"  Magic:   {buf[:16].hex()}")
+    print(f"  Magic:   {Color.redify(buf[:4].hex()) + buf[4:16].hex()}")
     print(f"  Class:                             {EiClass(buf[4]).name}")
     print(f"  Data:                              {EiData(buf[5]).name}")
     print(f"  Version:                           {EiVersion(buf[6]).name}")
