@@ -4,6 +4,7 @@ from pprint import pprint
 
 from peo.util import *
 
+
 def disasm(filepath):
     proc = sp.run(["objdump", "-d", "-M", "intel", filepath], encoding="utf-8", stdout=sp.PIPE, stderr=sp.PIPE)
 
@@ -13,4 +14,15 @@ def disasm(filepath):
         sys.exit(1)
 
     msgs = format_message(proc.stdout)
-    pprint(msgs)
+
+    for i, msg in enumerate(msgs):
+        try:
+            if "lea" in msg[2]:
+                addr = int(msg[3].split(" ")[0], 16)
+                msgs[i][3] = Color.greenify(f"{hex(addr)}; {get_section_as_str(filepath, '.rodata', addr)}")
+        except IndexError:
+            pass
+
+    # TODO: 出力を揃える
+    for msg in msgs:
+        print("\t\t".join(msg))

@@ -4,6 +4,7 @@ import argparse
 from peo.disasm import disasm
 from peo.fhdr import fhdr
 
+
 def main():
     parser = argparse.ArgumentParser(description="Python Extensions for objdump")
     parser.add_argument("file")  # 必須の引数
