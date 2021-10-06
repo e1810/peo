@@ -3,6 +3,7 @@ import subprocess as sp
 from pprint import pprint
 
 from peo.util import *
+from peo.arrow import *
 
 
 def disasm(filepath):
@@ -23,6 +24,8 @@ def disasm(filepath):
         except IndexError:
             pass
 
+    msgs = add_flow_arrow(msgs)
+
     # TODO: 出力を揃える
     for msg in msgs:
-        print("\t\t".join(msg))
+        print("  ".join(msg))
