@@ -10,9 +10,9 @@ class DepthManager:
 			ret = max(ret, self.depths[i])
 		return ret
 	
-	def incr(self, s: int, e: int) -> int:
+	def update(self, s: int, e: int, x: int) -> int:
 		for i in range(s, e+1):
-			self.depths[i] += 1
+			self.depths[i] = x
 	
 
 
@@ -24,18 +24,16 @@ def add_flow_arrow(msgs: str) -> str:
 			insts.append(msgs[i])
 		else:
 			if insts:
-				base = int(insts[0][0][:-1], 16)
-				ret += __arrowing_in_func(insts, base)
+				ret += __arrowing_in_func(insts)
 				insts = []
 			ret.append(msgs[i])
 	if insts:
-		base = int(msgs[len(msgs)-2][0][:-1], 16) - len(insts) + 1
-		ret += __arrowing_in_func(insts, base)
+		ret += __arrowing_in_func(insts)
 
 	return ret
 
 
-def __arrowing_in_func(insts: str, base: int) -> list:
+def __arrowing_in_func(insts: str) -> list:
 	# 基本的に逆から見ていく  矢印終点に辿り着いたら始点まで戻る形で矢を張る
 	# 終点が同じ2つの矢があると上のやつしかできない 要修正
 
@@ -47,13 +45,13 @@ def __arrowing_in_func(insts: str, base: int) -> list:
 		if addr in e2b:
 			st = e2b[addr]
 			depth = depthM.max(i, st)
-			arrows[i] = list('>' + '\u2500' * depth + '\u250c')
+			arrows[i] = list('>' + '\u2500' * depth + '\u250c') + arrows[st][2+depth:]
 			for j in range(i+1, st):
 				while len(arrows[j]) <= depth + 1:
 					arrows[j].append(' ')
 				arrows[j][depth+1] = '\u2502'
-			arrows[st] = list('<' + '\u2500' * depth + '\u2514')
-			depthM.incr(i, st)
+			arrows[st] = list('<' + '\u2500' * depth + '\u2514') + arrows[i][2+depth:]
+			depthM.update(i, st, depth+2)
 
 		if len(insts[i]) < 3 or len(insts[i][2].split()) == 1: continue
 		opc, opr, *_ = insts[i][2].split()
@@ -68,13 +66,13 @@ def __arrowing_in_func(insts: str, base: int) -> list:
 		if addr in e2b:
 			st = e2b[addr]
 			depth = depthM.max(st, i)
-			arrows[st] = list('<' + '\u2500' * depth + '\u250c')
+			arrows[st] = list('<' + '\u2500' * depth + '\u250c') + arrows[st][2+depth:]
 			for j in range(st+1, i):
 				while len(arrows[j]) <= depth + 1:
 					arrows[j].append(' ')
 				arrows[j][depth+1] = '\u2502'
-			arrows[i] = list('>'+ '\u2500' * depth + '\u2514')
-			depthM.incr(st, i)
+			arrows[i] = list('>'+ '\u2500' * depth + '\u2514') + arrows[i][2+depth:]
+			depthM.update(st, i, depth+2)
 
 		if len(insts[i]) < 3 or len(insts[i][2].split()) == 1: continue
 		opc, opr, *_ = insts[i][2].split()
@@ -83,14 +81,12 @@ def __arrowing_in_func(insts: str, base: int) -> list:
 		if int(opr, 16) < int(addr, 16): continue
 		e2b[opr] = i
 
-	for a in arrows:
-		print(a)
-	
 	depth = depthM.max(0, len(insts)-1)
+	print(depth)
 	for i in range(len(insts)):
-		print(arrows[i])
 		arrows[i] += [' '] * (depth - len(arrows[i]))
 		arrows[i].reverse()
+		print(arrows[i])
 		insts[i] = [''.join(arrows[i])] + insts[i]
 	return insts
 	
