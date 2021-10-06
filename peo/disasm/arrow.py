@@ -9,11 +9,11 @@ class DepthManager:
 		for i in range(s, e+1):
 			ret = max(ret, self.depths[i])
 		return ret
-	
+
 	def update(self, s: int, e: int, x: int) -> int:
 		for i in range(s, e+1):
 			self.depths[i] = x
-	
+
 
 
 def add_flow_arrow(msgs: str) -> str:
@@ -59,7 +59,7 @@ def __arrowing_in_func(insts: str) -> list:
 		if re.match('^[0-9a-f]*$', opr) is None: continue
 		if int(opr, 16) > int(addr, 16): continue
 		e2b[opr] = i
-	
+
 	e2b = dict()
 	for i in range(len(insts)):
 		addr = insts[i][0][:-1]
@@ -82,11 +82,8 @@ def __arrowing_in_func(insts: str) -> list:
 		e2b[opr] = i
 
 	depth = depthM.max(0, len(insts)-1)
-	print(depth)
 	for i in range(len(insts)):
 		arrows[i] += [' '] * (depth - len(arrows[i]))
 		arrows[i].reverse()
-		print(arrows[i])
 		insts[i] = [''.join(arrows[i])] + insts[i]
 	return insts
-	

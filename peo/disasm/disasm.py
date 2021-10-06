@@ -3,7 +3,7 @@ import subprocess as sp
 from pprint import pprint
 
 from peo.util import *
-from peo.arrow import *
+from peo.disasm.arrow import *
 
 
 def disasm(filepath):
