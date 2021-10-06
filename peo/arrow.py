@@ -47,12 +47,12 @@ def __arrowing_in_func(insts: str, base: int) -> list:
 		if addr in e2b:
 			st = e2b[addr]
 			depth = depthM.max(i, st)
-			arrows[i] = list('>' + '\u2500' * (depth-1) + '\u250c')
+			arrows[i] = list('>' + '\u2500' * depth + '\u250c')
 			for j in range(i+1, st):
-				while len(arrows[j]) <= depth:
+				while len(arrows[j]) <= depth + 1:
 					arrows[j].append(' ')
-				arrows[j][depth] = '\u2502'
-			arrows[st] = list('<' + '\u2500' * (depth-1) + '\u2514')
+				arrows[j][depth+1] = '\u2502'
+			arrows[st] = list('<' + '\u2500' * depth + '\u2514')
 			depthM.incr(i, st)
 
 		if len(insts[i]) < 3 or len(insts[i][2].split()) == 1: continue
@@ -68,12 +68,12 @@ def __arrowing_in_func(insts: str, base: int) -> list:
 		if addr in e2b:
 			st = e2b[addr]
 			depth = depthM.max(st, i)
-			arrows[st] = list('<' + '\u2500' * (depth-1) + '\u250c')
+			arrows[st] = list('<' + '\u2500' * depth + '\u250c')
 			for j in range(st+1, i):
-				while len(arrows[j]) <= depth:
+				while len(arrows[j]) <= depth + 1:
 					arrows[j].append(' ')
-				arrows[j][depth] = '\u2502'
-			arrows[i] = list('>'+ '\u2500' * (depth-1) + '\u2514')
+				arrows[j][depth+1] = '\u2502'
+			arrows[i] = list('>'+ '\u2500' * depth + '\u2514')
 			depthM.incr(st, i)
 
 		if len(insts[i]) < 3 or len(insts[i][2].split()) == 1: continue
@@ -82,6 +82,9 @@ def __arrowing_in_func(insts: str, base: int) -> list:
 		if re.match('^[0-9a-f]*$', opr) is None: continue
 		if int(opr, 16) < int(addr, 16): continue
 		e2b[opr] = i
+
+	for a in arrows:
+		print(a)
 	
 	depth = depthM.max(0, len(insts)-1)
 	for i in range(len(insts)):

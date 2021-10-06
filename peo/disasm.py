@@ -28,4 +28,4 @@ def disasm(filepath):
 
     # TODO: 出力を揃える
     for msg in msgs:
-        print("\t\t".join(msg))
+        print("  ".join(msg))
