@@ -38,17 +38,17 @@ class ArrowManager:
 		return ret
 
 
-def add_flow_arrow(msgs: str) -> str:
+def flow_arrow(msgs: str) -> str:
 	ret = []
 	insts = []
-	for i in range(3, len(msgs)):
+	for i in range(len(msgs)):
 		if re.match("[0-9a-f]+:", msgs[i][0]):
 			insts.append(msgs[i])
 		else:
 			if insts:
 				ret += __arrowing_in_func(insts)
 				insts = []
-			ret.append(msgs[i])
+			ret.append('')
 	if insts:
 		ret += __arrowing_in_func(insts)
 
@@ -96,7 +96,5 @@ def __arrowing_in_func(insts: str) -> list:
 		if opr in e2b: e2b[opr].append(i)
 		else: e2b[opr] = [i]
 
-	for i, arrowrow in enumerate(arrowM.output()):
-		insts[i] = [''.join(arrowrow)] + insts[i]
-	return insts
+	return [''.join(row) for row in arrowM.output()]
 	

@@ -1,7 +1,7 @@
 import sys
 import argparse
 
-from peo.disasm import disasm
+from peo.disasm.disasm import disasm
 from peo.fhdr import fhdr
 
 
