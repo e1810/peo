@@ -18,10 +18,12 @@ class ArrowManager:
 	
 	def add_arrow(self, s: int, e: int, col: int):
 		self.depth = max(self.depth, col+1)
+
 		outarrow = list('<' + '\u2500' * (col-1) + ['\u2514','\u250c'][s<e])
-		inarrow = list('>' + '\u2500' * (col-1) + ['\u2514','\u250c'][s>e])
 		self.arrows[s] = outarrow + self. arrows[s][1+col:]
+		inarrow = list('>' + '\u2500' * (col-1) + ['\u2514','\u250c'][s>e])
 		self.arrows[e] = inarrow + self.arrows[e][1+col:]
+
 		if s > e: s, e = e, s
 		for i in range(s+1, e):
 			while len(self.arrows[i]) <= col:
@@ -55,39 +57,44 @@ def add_flow_arrow(msgs: str) -> str:
 
 def __arrowing_in_func(insts: str) -> list:
 	# 基本的に逆から見ていく  矢印終点に辿り着いたら始点まで戻る形で矢を張る
-	# 終点が同じ2つの矢があると上のやつしかできない 要修正
+	# 矢を張る区間内で、他の矢と重ならない最も内側の列に矢を張る
 
 	arrowM = ArrowManager(len(insts))
-	e2b = dict()
 	# 下から上への矢印を処理
+	e2b = dict()
 	for i in range(len(insts)-1, -1, -1):
 		addr = insts[i][0][:-1]
 		if addr in e2b:
-			st = e2b[addr]
-			depth = arrowM.min_empty_col(i, st)
-			arrowM.add_arrow(st, i, depth)
+			for st in e2b[addr]:
+				depth = arrowM.min_empty_col(i, st)
+				arrowM.add_arrow(st, i, depth)
+			e2b[addr] = []
 			
 		if len(insts[i]) < 3 or len(insts[i][2].split()) == 1: continue
 		opc, opr, *_ = insts[i][2].split()
 		if opc[0] != 'j': continue
 		if re.match('^[0-9a-f]*$', opr) is None: continue
 		if int(opr, 16) > int(addr, 16): continue
-		e2b[opr] = i
+		if opr in e2b: e2b[opr].append(i)
+		else: e2b[opr] = [i]
 	
+	# 上から下への矢印を処理
 	e2b = dict()
 	for i in range(len(insts)):
 		addr = insts[i][0][:-1]
 		if addr in e2b:
-			st = e2b[addr]
-			depth = arrowM.min_empty_col(st, i)
-			arrowM.add_arrow(st, i, depth)
+			for st in e2b[addr]:
+				depth = arrowM.min_empty_col(st, i)
+				arrowM.add_arrow(st, i, depth)
+			e2b[addr] = []
 		
 		if len(insts[i]) < 3 or len(insts[i][2].split()) == 1: continue
 		opc, opr, *_ = insts[i][2].split()
 		if opc[0] != 'j': continue
 		if re.match('^[0-9a-f]*$', opr) is None: continue
 		if int(opr, 16) < int(addr, 16): continue
-		e2b[opr] = i
+		if opr in e2b: e2b[opr].append(i)
+		else: e2b[opr] = [i]
 
 	for i, arrowrow in enumerate(arrowM.output()):
 		insts[i] = [''.join(arrowrow)] + insts[i]
