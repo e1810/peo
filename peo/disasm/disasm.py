@@ -4,6 +4,7 @@ from pprint import pprint
 
 from peo.util import *
 from peo.disasm.arrow import *
+from peo.disasm.setcolor import *
 
 
 def disasm(filepath):
@@ -23,7 +24,8 @@ def disasm(filepath):
                 msgs[i][3] = Color.greenify(f"{hex(addr)}; {get_section_as_str(filepath, '.rodata', addr)}")
         except IndexError:
             pass
-
+    
+    msgs = split(msgs)
     msgs = add_flow_arrow(msgs)
 
     # TODO: 出力を揃える
