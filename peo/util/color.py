@@ -17,6 +17,12 @@ class Color:
         "underline_off"  : "\033[24m",
         "blink"          : "\033[5m",
         "blink_off"      : "\033[25m",
+        "bg_black"       : "\033[40m",
+        "bg_red"         : "\033[41m",
+        "bg_green"       : "\033[42m",
+        "bg_yellow"      : "\033[43m",
+        "bg_blue"        : "\033[44m",
+        "bg_white"       : "\033[47m"
     }
 
     @staticmethod
@@ -45,6 +51,13 @@ class Color:
     def underlinify(msg):  return Color.colorify(msg, "underline")
     @staticmethod
     def blinkify(msg):     return Color.colorify(msg, "blink")
+    def bg_blackify(msg):  return Color.colorify(msg, "bg_black")
+    @staticmethod
+    def bg_redify(msg):  return Color.colorify(msg, "bg_red")
+    @staticmethod
+    def bg_yellowify(msg):  return Color.colorify(msg, "bg_yellow")
+    @staticmethod
+    def bg_whiteify(msg):  return Color.colorify(msg, "bg_white")
 
     @staticmethod
     def colorify(text, attrs):
