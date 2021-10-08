@@ -24,7 +24,10 @@ def disasm(filepath):
         except IndexError:
             pass
 
-    msgs = add_flow_arrow(msgs)
+    #msgs = split(msgs)
+    arrows = flow_arrow(msgs)
+    for i in range(len(msgs)):
+        msgs[i] = [arrows[i]] + msgs[i]
 
     # TODO: 出力を揃える
     for msg in msgs:
