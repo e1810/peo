@@ -69,7 +69,7 @@ def __arrowing_in_func(insts: str) -> list:
 				depth = arrowM.min_empty_col(i, st)
 				arrowM.add_arrow(st, i, depth)
 			e2b[addr] = []
-			
+
 		if len(insts[i]) < 3 or len(insts[i][2].split()) == 1: continue
 		opc, opr, *_ = insts[i][2].split()
 		if opc[0] != 'j': continue
@@ -87,7 +87,7 @@ def __arrowing_in_func(insts: str) -> list:
 				depth = arrowM.min_empty_col(st, i)
 				arrowM.add_arrow(st, i, depth)
 			e2b[addr] = []
-		
+
 		if len(insts[i]) < 3 or len(insts[i][2].split()) == 1: continue
 		opc, opr, *_ = insts[i][2].split()
 		if opc[0] != 'j': continue
@@ -97,4 +97,3 @@ def __arrowing_in_func(insts: str) -> list:
 		else: e2b[opr] = [i]
 
 	return [''.join(row) for row in arrowM.output()]
-	
