@@ -1,46 +1,78 @@
 from peo.util import *
 
-#命令系統で配列持ってみた
+# 命令系統で分類
 jumper = ["jmp", "ja", "jae", "jb", "jbe", "jc", "jcxz", "je", "jg", "jge", "jl", "jle", "jna", "jnae", "jnb", "jnbe", "jnc", "jne", "jng", "jnge", "jnl", "jnle", "jno", "jnp", "jns", "jnz", "jo", "jp", "jpe", "jpo", "js", "jz"]
 
-caller = ["call"]
+caller = ["call", "lcall"]
 
-stacker = ["push", "pop"]
+stacker = ["push", "pop", "leave"]
 
-math = ["add", "sub", "and", "or", "xor"]
+calc = ["add", "sub", "and", "or", "xor"]
 
-#配色辞書
-clr_func = {"jumper":Color.yellowify, "caller":Color.bg_redify, "stacker":Color.purplify, "math":Color.blueify, "other":Color.blackify}
+# 色と関数
+clr_func = {
+    "normal":Color.normalify, "black":Color.blackify, "red":Color.redify,
+    "green":Color.greenify, "yellow":Color.yellowify, "blue":Color.blueify,
+    "purple":Color.purplify, "cyan":Color.cyanify, "bold":Color.boldify,
+    "highlight":Color.highlightify, "underline":Color.underlinify,
+    "blink":Color.blinkify, "bg_black":Color.bg_blackify,
+    "bg_red":Color.bg_redify, "bg_green":Color.bg_greenify,
+    "bg_yellow":Color.bg_yellowify, "bg_blue":Color.blueify,
+    "bg_purple":Color.bg_purplify, "bg_cyan":Color.bg_cyanify,
+    "bg_white":Color.bg_whiteify
+}
 
-#必要なアセンブラ部と命令部の取り出し
-def split(msgs):
+# 配色辞書
+asem_color = {
+    "jumper":Color.yellowify, "caller":Color.redify,
+    "stacker":Color.purplify, "calc":Color.blueify,
+    "other":Color.normalify
+}
+
+# 必要なアセンブラ部と命令部の取り出し
+def setcolor(msgs, filepath):
+    __make_dict()
     for i in range(len(msgs)):
-        if len(msgs[i]) >= 3:
-            msg = msgs[i][2].split(' ')
-            msgs[i][2] = setcolor(msgs[i][2], msg)
+        if len(msgs[i]) == 5 and "lea" in msgs[i][3]:
+            addr = int(msgs[i][4].split(' ')[0], 16)
+            msgs[i][4] = Color.greenify(f"{hex(addr)}; {get_section_as_str(filepath, '.rodata', addr)}")
+
+        elif len(msgs[i]) == 4:
+            msg = msgs[i][3].split(" ")
+            msgs[i][3] = __inner_setcolor(msgs[i][3], msg)
+
     return msgs
 
-#配色と適応
-def setcolor(msgs, msg):
+# ユーザー定義の配色に
+def __make_dict():
+    global asem_color
+    with open(".peorc", 'r') as d:
+        set_c = [s.replace("\n", "").split(" ") for s in d.readlines()]
+
+    for i in range(len(set_c)):
+        key = set_c[i][0]
+        clr = set_c[i][2]
+        user_f = clr_func[clr]
+        asem_color[key] = user_f
+
+# 配色と適応
+def __inner_setcolor(msgs, msg):
     if msg[0] in jumper:
-        msgs = clr_func["jumper"](msgs)
-        return msgs
-    
+        c_msgs = asem_color["jumper"](msgs)
+
     elif msg[0] in caller:
-        msgs = clr_func["caller"](msgs)
-        return msgs
-    
+        c_msgs = asem_color["caller"](msgs)
+
     elif msg[0] in stacker:
-        msg[0] = clr_func["stacker"](msg[0])
-        msgs = ' '.join(msg)
-        return msgs
-    
-    elif msg[0] in math:
-        msg[0] = clr_func["math"](msg[0])
-        msgs = ' '.join(msg)
-        return msgs
-    
+        msg[0] = asem_color["stacker"](msg[0])
+        c_msgs = ' '.join(msg)
+
+    elif msg[0] in calc:
+        msg[0] = asem_color["calc"](msg[0])
+        c_msgs = ' '.join(msg)
+
     else:
-        msg[0] = clr_func["other"](msg[0])
-        msgs = ' '.join(msg)
-        return msgs
+        msg[0] = asem_color["other"](msg[0])
+        c_msgs = ' '.join(msg)
+
+    return c_msgs
