@@ -22,9 +22,13 @@ class Color:
         "bg_green"       : "\033[42m",
         "bg_yellow"      : "\033[43m",
         "bg_blue"        : "\033[44m",
+        "bg_purple"      : "\033[45m",
+        "bg_cyan"        : "\033[46m",
         "bg_white"       : "\033[47m"
     }
 
+    @staticmethod
+    def normalify(msg):    return Color.colorify(msg, "normal")
     @staticmethod
     def blackify(msg):     return Color.colorify(msg, "black")
     @staticmethod
@@ -35,10 +39,6 @@ class Color:
     def yellowify(msg):    return Color.colorify(msg, "yellow")
     @staticmethod
     def blueify(msg):      return Color.colorify(msg, "blue")
-    @staticmethod
-    def grayify(msg):      return Color.colorify(msg, "gray")
-    @staticmethod
-    def light_grayify(msg):return Color.colorify(msg, "light_gray")
     @staticmethod
     def purplify(msg):     return Color.colorify(msg, "purple")
     @staticmethod
@@ -51,11 +51,20 @@ class Color:
     def underlinify(msg):  return Color.colorify(msg, "underline")
     @staticmethod
     def blinkify(msg):     return Color.colorify(msg, "blink")
+    @staticmethod
     def bg_blackify(msg):  return Color.colorify(msg, "bg_black")
     @staticmethod
-    def bg_redify(msg):  return Color.colorify(msg, "bg_red")
+    def bg_redify(msg):    return Color.colorify(msg, "bg_red")
     @staticmethod
-    def bg_yellowify(msg):  return Color.colorify(msg, "bg_yellow")
+    def bg_greenify(msg):  return Color.colorify(msg, "bg_green")
+    @staticmethod
+    def bg_yellowify(msg): return Color.colorify(msg, "bg_yellow")
+    @staticmethod
+    def bg_blueify(msg):   return Color.colorify(msg, "bg_blue")
+    @staticmethod
+    def bg_purplify(msg):  return Color.colorify(msg, "bg_purple")
+    @staticmethod
+    def bg_cyanify(msg):   return Color.colorify(msg, "bg_cyan")
     @staticmethod
     def bg_whiteify(msg):  return Color.colorify(msg, "bg_white")
 
