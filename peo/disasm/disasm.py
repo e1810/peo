@@ -24,10 +24,10 @@ def disasm(filepath):
                 msgs[i][3] = Color.greenify(f"{hex(addr)}; {get_section_as_str(filepath, '.rodata', addr)}")
         except IndexError:
             pass
-    
-    msgs = split(msgs)
-    msgs = add_flow_arrow(msgs)
+
+    arrow_msgs = add_flow_arrow(msgs)
+    complete_msgs = setcolor(arrow_msgs, filepath)
 
     # TODO: 出力を揃える
-    for msg in msgs:
+    for msg in complete_msgs:
         print("  ".join(msg))
