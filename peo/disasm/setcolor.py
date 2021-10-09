@@ -1,7 +1,11 @@
 from peo.util import *
 
 # 命令系統で分類
-jumper = ["jmp", "ja", "jae", "jb", "jbe", "jc", "jcxz", "je", "jg", "jge", "jl", "jle", "jna", "jnae", "jnb", "jnbe", "jnc", "jne", "jng", "jnge", "jnl", "jnle", "jno", "jnp", "jns", "jnz", "jo", "jp", "jpe", "jpo", "js", "jz"]
+jumper = [
+    "jmp", "ja", "jae", "jb", "jbe", "jc", "jcxz", "je", "jg", "jge", "jl", 
+    "jle", "jna", "jnae", "jnb", "jnbe", "jnc", "jne", "jng",  "jnge", "jnl",
+    "jnle", "jno", "jnp", "jns", "jnz", "jo", "jp", "jpe",  "jpo", "js", "jz"
+]
 
 caller = ["call", "lcall"]
 
