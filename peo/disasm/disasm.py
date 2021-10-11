@@ -4,6 +4,7 @@ from pprint import pprint
 
 from peo.util import *
 from peo.disasm.arrow import *
+from peo.disasm.setcolor import *
 
 
 def disasm(filepath):
@@ -20,14 +21,15 @@ def disasm(filepath):
         try:
             if "lea" in msg[2]:
                 addr = int(msg[3].split(" ")[0], 16)
-                msgs[i][3] = Color.greenify(f"{hex(addr)}; {get_section_as_str(filepath, '.rodata', addr)}")
+                msgs[i][3] = f"{hex(addr)}; {get_section_as_str(filepath, '.rodata', addr)}"
         except IndexError:
             pass
 
-    #msgs = split(msgs)
     arrows = flow_arrow(msgs)
     for i in range(len(msgs)):
         msgs[i] = [arrows[i]] + msgs[i]
+
+    msgs = setcolor(msgs)
 
     # TODO: 出力を揃える
     for msg in msgs:
