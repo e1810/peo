@@ -1,3 +1,4 @@
+import os
 from peo.util import *
 
 
@@ -23,7 +24,7 @@ clr_func = {
     "highlight": Color.highlightify, "underline": Color.underlinify,
     "blink": Color.blinkify, "bg_black": Color.bg_blackify,
     "bg_red": Color.bg_redify, "bg_green": Color.bg_greenify,
-    "bg_yellow": Color.bg_yellowify, "bg_blue": Color.blueify,
+    "bg_yellow": Color.bg_yellowify, "bg_blue": Color.bg_blueify,
     "bg_purple": Color.bg_purplify, "bg_cyan": Color.bg_cyanify,
     "bg_white": Color.bg_whiteify
 }
@@ -51,14 +52,17 @@ def setcolor(msgs):
 # ユーザー定義の配色に
 def __make_dict():
     global asem_color
-    with open("peorc", 'r') as d:
-        set_c = [s.replace("\n", "").split(" ") for s in d.readlines()]
+    try:
+        with open(os.path.join(os.environ['HOME'], ".peorc"), 'r') as d:
+            set_c = [s.replace("\n", "").split(" ") for s in d.readlines()]
 
-    for i in range(len(set_c)):
-        key = set_c[i][0]
-        clr = set_c[i][2]
-        user_f = clr_func[clr]
-        asem_color[key] = user_f
+        for i in range(len(set_c)):
+            key = set_c[i][0]
+            clr = set_c[i][2]
+            user_f = clr_func[clr]
+            asem_color[key] = user_f
+    except FileNotFoundError:
+        pass
 
 # 配色と適応
 def __inner_setcolor(msgs, msg):
