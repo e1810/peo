@@ -1,9 +1,10 @@
 import sys
 import argparse
 
-from peo.disasm import disasm
+from peo.disasm.disasm import disasm
 from peo.fhdr import fhdr
 from peo.checksec import checksec
+
 
 
 def main():

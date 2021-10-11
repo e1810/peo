@@ -4,6 +4,7 @@ from enum import Enum, auto
 
 from peo.util import Color
 
+
 class EiClass(Enum):
     NONE = 0x00
     ELF32 = 0x01
