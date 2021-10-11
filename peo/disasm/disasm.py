@@ -30,8 +30,8 @@ def disasm(filepath):
     for i in range(len(msgs)):
         msgs[i] = [arrows[i]] + msgs[i]
     
-    comp_msgs = setcolor(msgs)
+    msgs = setcolor(msgs)
 
     # TODO: 出力を揃える
-    for msg in comp_msgs:
+    for msg in msgs:
         print("  ".join(msg))
