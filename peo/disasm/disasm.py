@@ -21,13 +21,17 @@ def disasm(filepath):
         try:
             if "lea" in msg[2]:
                 addr = int(msg[3].split(" ")[0], 16)
-                msgs[i][3] = Color.greenify(f"{hex(addr)}; {get_section_as_str(filepath, '.rodata', addr)}")
+                msgs[i][3] = f"{hex(addr)}; {get_section_as_str(filepath, '.rodata', addr)}"
         except IndexError:
             pass
 
-    arrow_msgs = add_flow_arrow(msgs)
-    complete_msgs = setcolor(arrow_msgs, filepath)
+    #msgs = split(msgs)
+    arrows = flow_arrow(msgs)
+    for i in range(len(msgs)):
+        msgs[i] = [arrows[i]] + msgs[i]
+    
+    comp_msgs = setcolor(msgs)
 
     # TODO: 出力を揃える
-    for msg in complete_msgs:
+    for msg in comp_msgs:
         print("  ".join(msg))
