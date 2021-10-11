@@ -1,10 +1,12 @@
 from peo.util import *
 
+
 # 命令系統で分類
 jumper = [
-    "jmp", "ja", "jae", "jb", "jbe", "jc", "jcxz", "je", "jg", "jge", "jl", 
-    "jle", "jna", "jnae", "jnb", "jnbe", "jnc", "jne", "jng",  "jnge", "jnl",
-    "jnle", "jno", "jnp", "jns", "jnz", "jo", "jp", "jpe",  "jpo", "js", "jz"
+    "jmp", "ja", "jae", "jb", "jbe", "jc", "jcxz", "je",
+    "jg", "jge", "jl", "jle", "jna", "jnae", "jnb", "jnbe",
+    "jnc", "jne", "jng", "jnge", "jnl", "jnle", "jno", "jnp",
+    "jns", "jnz", "jo", "jp", "jpe", "jpo", "js", "jz"
 ]
 
 caller = ["call", "lcall"]
@@ -15,31 +17,30 @@ calc = ["add", "sub", "and", "or", "xor"]
 
 # 色と関数
 clr_func = {
-    "normal":Color.normalify, "black":Color.blackify, "red":Color.redify,
-    "green":Color.greenify, "yellow":Color.yellowify, "blue":Color.blueify,
-    "purple":Color.purplify, "cyan":Color.cyanify, "bold":Color.boldify,
-    "highlight":Color.highlightify, "underline":Color.underlinify,
-    "blink":Color.blinkify, "bg_black":Color.bg_blackify,
-    "bg_red":Color.bg_redify, "bg_green":Color.bg_greenify,
-    "bg_yellow":Color.bg_yellowify, "bg_blue":Color.blueify,
-    "bg_purple":Color.bg_purplify, "bg_cyan":Color.bg_cyanify,
-    "bg_white":Color.bg_whiteify
+    "normal": Color.normalify, "black": Color.blackify, "red": Color.redify,
+    "green": Color.greenify, "yellow": Color.yellowify, "blue": Color.blueify,
+    "purple": Color.purplify, "cyan": Color.cyanify, "bold": Color.boldify,
+    "highlight": Color.highlightify, "underline": Color.underlinify,
+    "blink": Color.blinkify, "bg_black": Color.bg_blackify,
+    "bg_red": Color.bg_redify, "bg_green": Color.bg_greenify,
+    "bg_yellow": Color.bg_yellowify, "bg_blue": Color.blueify,
+    "bg_purple": Color.bg_purplify, "bg_cyan": Color.bg_cyanify,
+    "bg_white": Color.bg_whiteify
 }
 
 # 配色辞書
 asem_color = {
-    "jumper":Color.yellowify, "caller":Color.redify,
-    "stacker":Color.purplify, "calc":Color.blueify,
-    "other":Color.normalify
+    "jumper": Color.yellowify, "caller": Color.redify,
+    "stacker": Color.purplify, "calc": Color.blueify,
+    "other": Color.normalify
 }
 
 # 必要なアセンブラ部と命令部の取り出し
-def setcolor(msgs, filepath):
+def setcolor(msgs):
     __make_dict()
     for i in range(len(msgs)):
         if len(msgs[i]) == 5 and "lea" in msgs[i][3]:
-            addr = int(msgs[i][4].split(' ')[0], 16)
-            msgs[i][4] = Color.greenify(f"{hex(addr)}; {get_section_as_str(filepath, '.rodata', addr)}")
+            msgs[i][4] = Color.greenify(msgs[i][4])
 
         elif len(msgs[i]) == 4:
             msg = msgs[i][3].split(" ")
@@ -50,7 +51,7 @@ def setcolor(msgs, filepath):
 # ユーザー定義の配色に
 def __make_dict():
     global asem_color
-    with open(".peorc", 'r') as d:
+    with open("peorc", 'r') as d:
         set_c = [s.replace("\n", "").split(" ") for s in d.readlines()]
 
     for i in range(len(set_c)):
