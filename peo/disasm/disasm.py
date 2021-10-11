@@ -26,11 +26,10 @@ def disasm(filepath):
             pass
 
     arrows = flow_arrow(msgs)
-    msgs = setcolor(msgs)
-
     for i in range(len(msgs)):
         msgs[i] = [arrows[i]] + msgs[i]
-    
+
+    msgs = setcolor(msgs)
 
     # TODO: 出力を揃える
     for msg in msgs:
