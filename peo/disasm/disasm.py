@@ -2,9 +2,10 @@ import sys
 import subprocess as sp
 from pprint import pprint
 
-from peo.util import *
-from peo.disasm.arrow import *
-from peo.disasm.setcolor import *
+from peo.util import format_message
+from peo.disasm.comment import Comment
+from peo.disasm.arrow import flow_arrow
+from peo.disasm.setcolor import setcolor
 
 
 def disasm(filepath):
@@ -17,13 +18,7 @@ def disasm(filepath):
 
     msgs = format_message(proc.stdout)
 
-    for i, msg in enumerate(msgs):
-        try:
-            if "lea" in msg[2]:
-                addr = int(msg[3].split(" ")[0], 16)
-                msgs[i][3] = f"{hex(addr)}; {get_section_as_str(filepath, '.rodata', addr)}"
-        except IndexError:
-            pass
+    msgs = Comment(filepath, msgs).add()
 
     arrows = flow_arrow(msgs)
     msgs = setcolor(msgs)
