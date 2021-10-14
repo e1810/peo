@@ -1,6 +1,5 @@
 import sys
 import subprocess as sp
-from pprint import pprint
 
 from peo.util import format_message
 from peo.disasm.comment import Comment
