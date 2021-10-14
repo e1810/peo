@@ -39,12 +39,16 @@ asem_color = {
 def setcolor(msgs):
     __make_dict()
     for i in range(len(msgs)):
-        if len(msgs[i]) == 5 and "lea" in msgs[i][3]:
-            msgs[i][4] = Color.greenify(msgs[i][4])
+        if len(msgs[i]) == 4:
+            if msgs[i][3][0] == ';':
+                msgs[i][3] = Color.greenify(msgs[i][3])
+            else:
+                msg = msgs[i][2].split(" ")
+                msgs[i][2] = __inner_setcolor(msgs[i][2], msg)
 
-        elif len(msgs[i]) == 4:
-            msg = msgs[i][3].split(" ")
-            msgs[i][3] = __inner_setcolor(msgs[i][3], msg)
+        elif len(msgs[i]) == 3:
+            msg = msgs[i][2].split(" ")
+            msgs[i][2] = __inner_setcolor(msgs[i][2], msg)
 
     return msgs
 
