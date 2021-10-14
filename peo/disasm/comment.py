@@ -29,10 +29,8 @@ class Comment:
     def mov_word(self):
         for i, msg in enumerate(self.msgs):
             try:
-                print(msg[2])
                 if "mov" in msg[2] and "ORD" in msg[2].split(" ")[1]:
                     long_str_little = int(msg[2].split(",")[1], 16)
-                    print(long_str_little)
                     plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode('utf-8')
                     self.msgs[i].append(f"; '{plain_str}'")
             except IndexError:
