@@ -1,5 +1,6 @@
 jumper = yellow
-stacker = red
-caller = purple
+stacker = purple
+caller = red
 calc = blue
-other = black
+other = normal
+func = green
