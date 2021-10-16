@@ -1,7 +1,6 @@
 from sys import byteorder
 from peo.util import get_section_as_str
 
-
 class Comment:
     def __init__(self, filepath: str, msgs: list):
         self.filepath = filepath
@@ -21,8 +20,14 @@ class Comment:
             try:
                 if "movabs" in msg[2]:
                     long_str_little = int(msg[2].split(",")[1], 16)
-                    plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode('utf-8')
-                    self.msgs[i].append(f"; '{plain_str}'")
+                    if long_str_little >= 0x20:
+                        if long_str_little <= 0x7e:
+                            plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode('utf-8')
+
+                        elif long_str_little >= 0x2020:
+                            plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode()
+
+                        self.msgs[i].append(f"; '{plain_str}'")
             except IndexError:
                 pass
 
@@ -31,8 +36,14 @@ class Comment:
             try:
                 if "mov" in msg[2] and "ORD" in msg[2].split(" ")[1]:
                     long_str_little = int(msg[2].split(",")[1], 16)
-                    plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode('utf-8')
-                    self.msgs[i].append(f"; '{plain_str}'")
+                    if long_str_little >= 0x20:
+                        if long_str_little <= 0x7e:
+                            plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode('utf-8')
+
+                        elif long_str_little >= 0x2020:
+                            plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode()
+    
+                        self.msgs[i].append(f"; '{plain_str}'")
             except IndexError:
                 pass
             except ValueError:
