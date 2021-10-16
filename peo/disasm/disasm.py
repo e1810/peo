@@ -1,10 +1,12 @@
 import sys
 import subprocess as sp
+from pprint import pprint
 
 from peo.util import format_message
 from peo.disasm.comment import Comment
 from peo.disasm.arrow import flow_arrow
 from peo.disasm.setcolor import setcolor
+from peo.disasm.indent import organize, indent
 
 
 def disasm(filepath):
@@ -16,15 +18,16 @@ def disasm(filepath):
         sys.exit(1)
 
     msgs = format_message(proc.stdout)
-
     msgs = Comment(filepath, msgs).add()
+    msgs = organize(msgs)
 
     arrows = flow_arrow(msgs)
     msgs = setcolor(msgs)
-    
-    for i in range(len(msgs)):
-        msgs[i] = [arrows[i]] + msgs[i]
+    msgs = indent(arrows, msgs)
 
     # TODO: 出力を揃える
-    for msg in msgs:
-        print("  ".join(msg))
+    for i in range(len(msgs)):
+        print("   ".join(msgs[i]))
+        if len(msgs[i]) != 1 and i+1 != len(msgs):
+            if len(msgs[i+1]) == 1:
+                print()
