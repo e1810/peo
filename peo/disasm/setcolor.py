@@ -33,7 +33,7 @@ clr_func = {
 asem_color = {
     "jumper": Color.yellowify, "caller": Color.redify,
     "stacker": Color.purplify, "calc": Color.blueify,
-    "other": Color.normalify
+    "other": Color.normalify, "func" : Color.greenify
 }
 
 # 必要なアセンブラ部と命令部の取り出し
@@ -50,6 +50,11 @@ def setcolor(msgs):
         elif len(msgs[i]) == 3:
             msg = msgs[i][2].split(" ")
             msgs[i][2] = __inner_setcolor(msgs[i][2], msg)
+        
+        elif len(msgs[i]) == 1:
+            if "<" in msgs[i][0]:
+                msgs[i][0] = asem_color["func"](msgs[i][0])
+                msgs[i+1][0] = asem_color["func"](msgs[i+1][0])
 
     return msgs
 
