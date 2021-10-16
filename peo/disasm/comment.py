@@ -22,7 +22,7 @@ class Comment:
                     long_str_little = int(msg[2].split(",")[1], 16)
                     if long_str_little >= 0x20:
                         if long_str_little <= 0x7e:
-                            plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode('utf-8')
+                            plain_str = chr(long_str_little)
 
                         elif long_str_little >= 0x2020:
                             plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode()
@@ -38,7 +38,7 @@ class Comment:
                     long_str_little = int(msg[2].split(",")[1], 16)
                     if long_str_little >= 0x20:
                         if long_str_little <= 0x7e:
-                            plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode('utf-8')
+                            plain_str = chr(long_str_little)
 
                         elif long_str_little >= 0x2020:
                             plain_str = long_str_little.to_bytes((long_str_little.bit_length() + 7) // 8, byteorder='little').decode()
