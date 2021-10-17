@@ -3,3 +3,5 @@ stacker = purple
 caller = red
 calc = blue
 other = normal
+func = green
+
