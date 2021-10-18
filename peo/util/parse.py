@@ -28,7 +28,7 @@ def get_section_as_str(filepath: str, section: str, ndx: int) -> str:
     proc[-1][-1] = rm_consecutive_spaces(proc[-1][-1])
 
     ssaddr = int(proc[0][0], 16)  # sectionの始まるアドレス
-    ndx = ndx - ssaddr
+    ndx = int(ndx, 16) - ssaddr
     stab = ""
     for line in proc:
         stab += line[1].replace(" ", "")
