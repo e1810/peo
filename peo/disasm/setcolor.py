@@ -1,5 +1,5 @@
 import os
-from peo.util import *
+from peo.util import Color
 
 
 # 命令系統で分類
@@ -33,8 +33,9 @@ clr_func = {
 asem_color = {
     "jumper": Color.yellowify, "caller": Color.redify,
     "stacker": Color.purplify, "calc": Color.blueify,
-    "other": Color.normalify, "func" : Color.greenify
+    "other": Color.normalify, "func": Color.greenify
 }
+
 
 # 必要なアセンブラ部と命令部の取り出し
 def setcolor(msgs):
@@ -50,13 +51,14 @@ def setcolor(msgs):
         elif len(msgs[i]) == 3:
             msg = msgs[i][2].split(" ")
             msgs[i][2] = __inner_setcolor(msgs[i][2], msg)
-        
+
         elif len(msgs[i]) == 1:
             if "<" in msgs[i][0]:
                 msgs[i][0] = asem_color["func"](msgs[i][0])
                 msgs[i+1][0] = asem_color["func"](msgs[i+1][0])
 
     return msgs
+
 
 # ユーザー定義の配色に
 def __make_dict():
@@ -72,6 +74,7 @@ def __make_dict():
             asem_color[key] = user_f
     except FileNotFoundError:
         pass
+
 
 # 配色と適応
 def __inner_setcolor(msgs, msg):

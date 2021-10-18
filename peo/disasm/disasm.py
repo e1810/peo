@@ -9,7 +9,12 @@ from peo.disasm.indent import organize, indent
 
 
 def disasm(filepath):
-    proc = sp.run(["objdump", "-d", "-M", "intel", filepath], encoding="utf-8", stdout=sp.PIPE, stderr=sp.PIPE)
+    proc = sp.run(
+        ["objdump", "-d", "-M", "intel", filepath],
+        encoding="utf-8",
+        stdout=sp.PIPE,
+        stderr=sp.PIPE
+    )
 
     # objdumpがエラーを出したらやめるっピ
     if proc.returncode != 0:
