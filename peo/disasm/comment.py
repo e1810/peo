@@ -10,13 +10,13 @@ class Comment:
         for i, msg in enumerate(self.msgs):
             try:
                 if "lea" in msg[2]:
-                    addr = hex(int(msg[3].split(" ")[0], 16))
+                    addr = int(msg[3].split(" ")[0], 16)
 
                     plain_str = repr(
                         get_section_as_str(self.filepath, '.rodata', addr)
                     )
 
-                    self.msgs[i][3] = f"; {addr} ; {plain_str}"
+                    self.msgs[i][3] = f"; {hex(addr)} ; {plain_str}"
             except IndexError:
                 pass
 
