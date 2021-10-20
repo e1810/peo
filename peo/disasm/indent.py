@@ -1,11 +1,15 @@
+space = []
+
 def organize(msgs):
-    max_size = max([len(msgs[i][1]) for i in range(len(msgs)) if len(msgs[i]) >= 2])
-    
+    max_size = max(
+        [len(msgs[i][1]) for i in range(len(msgs)) if len(msgs[i]) >= 2]
+    )
+
     for i in range(len(msgs)):
         if len(msgs[i]) >= 2:
             l = max_size - len(msgs[i][1])
             msgs[i][1] = msgs[i][1] + " " * l
-        
+
         elif len(msgs[i]) == 1:
             if "<" in msgs[i][0]:
                 msg = msgs[i][0].split(" ")
@@ -14,13 +18,17 @@ def organize(msgs):
     return msgs
 
 def indent(arrows, msgs):
+    global space
     max_size = max(len(arrow) for arrow in arrows)
-
     for i in range(len(msgs)):
         if len(msgs[i]) == 1:
-            l = max_size - len(arrows[i]) -2
+            l = max_size - len(arrows[i]) - 2
         else:
             l = max_size - len(arrows[i])
-        msgs[i][0] = " " * l + arrows[i] + " " + msgs[i][0]
+        space.append(l)
+
+def combine(arrows, msgs):
+    for i in range(len(msgs)):
+        msgs[i][0] = " " * space[i] + arrows[i] + " " + msgs[i][0]
     
     return msgs
