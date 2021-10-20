@@ -5,7 +5,7 @@ pip install git+https://github.com/d4wnin9/peo
 
 ## help
 ```
-usage: core.py [-h] [-d] [-f] [-c] file
+usage: peo [-h] [-d] [-f] [-c] file
 
 Python Extensions for objdump
 
