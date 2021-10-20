@@ -106,7 +106,6 @@ def __inner_setcolor(msgs, msg):
 # 矢印に色をつける
 def __arrow_clr(arrows, clr_nums):
     for i, clr_num in zip(range(len(arrows)), clr_nums):
-        # print(arrows[i], clr_num, len(arrows[i]))
         if len(arrows[i]) != 0:
             split_arrow = []
             for j in range(len(arrows[i])):
@@ -116,4 +115,5 @@ def __arrow_clr(arrows, clr_nums):
                 key = clr_num[s] % 8
                 split_arrow[s] = asem_color[key](split_arrow[s])
             arrows[i] = ''.join(split_arrow)
+
     return arrows
