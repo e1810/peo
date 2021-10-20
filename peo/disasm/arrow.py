@@ -44,10 +44,17 @@ class ArrowManager:
             self.arrows[i][col] = '\u2502'
             self.colors[i][col] = color
     
-    def output(self) -> list[list[str]]:
+    def get_arrows(self) -> list[list[str]]:
         ret = []
         for row in self.arrows:
             adjusted_row = row + [' '] * (self.depth - len(row))
+            ret.append(list(reversed(adjusted_row)))
+        return ret
+
+    def get_colors(self) -> list[list[int]]:
+        ret = []
+        for row in self.colors:
+            adjusted_row = row + [0] * (self.depth - len(row))
             ret.append(list(reversed(adjusted_row)))
         return ret
 
@@ -116,6 +123,6 @@ def __arrowing_in_func(insts: str) -> (list[str], list[list[int]]):
         if opr in e2b: e2b[opr].append(i)
         else: e2b[opr] = [i]
 
-    newarrows =  [''.join(row) for row in arrowM.output()]
-    newcolors = arrowM.colors
+    newarrows =  [''.join(row) for row in arrowM.get_arrows()]
+    newcolors = arrowM.get_colors()
     return (newarrows, newcolors)
