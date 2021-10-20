@@ -25,7 +25,7 @@ def disasm(filepath):
         except IndexError:
             pass
 
-    arrows = flow_arrow(msgs)
+    arrows, arrowcolors = flow_arrow(msgs)
     for i in range(len(msgs)):
         msgs[i] = [arrows[i]] + msgs[i]
 
