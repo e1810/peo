@@ -36,7 +36,7 @@ asem_color = {
     "other": Color.normalify, "func": Color.greenify,
     0: Color.normalify, 1: Color.redify, 2: Color.yellowify,
     3: Color.greenify, 5: Color.blueify, 6: Color.purplify,
-    7: Color.cyanify 
+    7: Color.cyanify
 }
 
 
@@ -103,7 +103,7 @@ def __inner_setcolor(msgs, msg):
 
 
 # 矢印に色をつける
-def __arrow_clr(arrows, clr_nums):
+def arrow_clr(arrows, clr_nums):
     for i, clr_num in zip(range(len(arrows)), clr_nums):
         if len(arrows[i]) != 0:
             split_arrow = []

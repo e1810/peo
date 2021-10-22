@@ -16,7 +16,8 @@ class ArrowManager:
         emp[0] = False
         for i in range(l, r+1):
             for j in range(min(self.depth, len(self.arrows[i]))):
-                emp[j] = emp[j] and (self.arrows[i][j] not in ['\u2502', '\u2514', '\u250c'])
+                emp[j] = emp[j] and \
+                    (self.arrows[i][j] not in ['\u2502', '\u2514', '\u250c'])
                 usedcolors.add(self.colors[i][j])
                 while recommended_color in usedcolors:
                     recommended_color += 1

@@ -1,6 +1,10 @@
+from typing import List
+
+
 space = []
 
-def organize(msgs):
+
+def organize(msgs: List[List[str]]) -> List[List[str]]:
     max_size = max(
         [len(msgs[i][1]) for i in range(len(msgs)) if len(msgs[i]) >= 2]
     )
@@ -18,7 +22,7 @@ def organize(msgs):
     return msgs
 
 
-def indent(arrows, msgs):
+def indent(arrows: List[str], msgs: List[List[str]]):
     global space
     max_size = max(len(arrow) for arrow in arrows)
     for i in range(len(msgs)):
@@ -29,7 +33,7 @@ def indent(arrows, msgs):
         space.append(l)
 
 
-def combine(arrows, msgs):
+def combine(arrows: List[str], msgs: List[List[str]]) -> List[List[str]]:
     for i in range(len(msgs)):
         msgs[i][0] = " " * space[i] + arrows[i] + " " + msgs[i][0]
 
