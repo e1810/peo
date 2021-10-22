@@ -1,5 +1,4 @@
 import os
-from re import split
 from peo.util import Color
 
 
