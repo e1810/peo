@@ -4,8 +4,8 @@ import subprocess as sp
 from peo.util import format_message
 from peo.disasm.comment import Comment
 from peo.disasm.arrow import flow_arrow
-from peo.disasm.setcolor import setcolor, __arrow_clr
-from peo.disasm.indent import organize, indent, combine 
+from peo.disasm.setcolor import setcolor, arrow_clr
+from peo.disasm.indent import organize, indent, combine
 
 
 def disasm(filepath):
@@ -27,7 +27,7 @@ def disasm(filepath):
 
     arrows, arrowcolors = flow_arrow(msgs)
     indent(arrows, msgs)
-    clr_arrows = __arrow_clr(arrows, arrowcolors)
+    clr_arrows = arrow_clr(arrows, arrowcolors)
     msgs = setcolor(msgs)
     perf_msgs = combine(clr_arrows, msgs)
 
