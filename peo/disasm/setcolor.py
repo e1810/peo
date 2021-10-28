@@ -36,7 +36,7 @@ asem_color = {
     "other": Color.normalify, "func": Color.greenify,
     0: Color.normalify, 1: Color.redify, 2: Color.yellowify,
     3: Color.greenify, 4: Color.blueify, 5: Color.purplify,
-    6: Color.cyanify
+    6: Color.cyanify, 7: Color.blackify
 }
 
 
@@ -111,7 +111,7 @@ def arrow_clr(arrows, clr_nums):
                 split_arrow.append(arrows[i][j])
 
             for s in range(len(split_arrow)):
-                key = clr_num[s] % 7
+                key = clr_num[s] % 8
                 split_arrow[s] = asem_color[key](split_arrow[s])
             arrows[i] = ''.join(split_arrow)
 
