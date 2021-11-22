@@ -3,6 +3,7 @@ import argparse
 from peo.disasm.disasm import disasm
 from peo.fhdr import fhdr
 from peo.checksec import checksec
+from peo.interactive import interactive
 
 
 def main():
@@ -28,6 +29,12 @@ def main():
         action="store_true",
         help="Display properties of executables"
     )
+    parser.add_argument(
+        "-i",
+        "--interactive",
+        action="store_true",
+        help="Enter the interactive shell"
+    )
 
     args = parser.parse_args()
 
@@ -45,6 +52,8 @@ def main():
         fhdr(filepath)
     elif args.checksec:
         checksec(filepath)
+    elif args.interactive:
+        interactive(filepath)
 
 
 if __name__ == "__main__":
